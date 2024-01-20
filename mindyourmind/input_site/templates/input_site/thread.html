@@ -1,0 +1,35 @@
+{% extends "input_site/base.html" %}    
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h3>{{ thread.title }}</h3>
+    <p>{{ thread.text }}</p>   
+{% endblock page_header %}
+
+{% block content %}
+
+    <form action="{% url 'input_site:thread' thread.id %}" method='post' class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name='submit' class="btn btn-primary">Add comment</button>
+        {% endbuttons %}
+    </form>
+
+    <ul>
+        {% for comment in comments %}
+            <div class="card mb-3">
+                <h4 class="card-header">
+                    <p>{{ comment.owner }} posted on </p>{{ comment.date_added|date:'M d, Y H:i' }}
+                </h4>
+                <div class="card-body">
+                    {{ comment.text|linebreaks }}
+                </div>
+            </div>
+            <br></br>
+        {% empty %}
+            <li>Looks like there aren't any comments yet. Start the conversation by adding a comment!</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

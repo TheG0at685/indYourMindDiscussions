@@ -1,0 +1,23 @@
+{% extends "input_site/base.html" %}
+
+{% block page_header %}
+    <h1>Discussions</h1>
+{% endblock page_header %}
+
+{% block content %}
+    <h3><a href="{% url 'input_site:new_thread' %}">Create a discussion </a></h3>
+    <ul>
+        {% for thread in threads %}
+            <div class="card mb-3">
+                <h4 class="card-header">
+                    <a href="{% url 'input_site:thread' thread.id %}">{{ thread.title }}</a> <small>   {{ thread.date_added|date:'M d, Y H:i' }}</small>
+                </h4>
+            <div class="card-body">
+                {{ thread.text|linebreaks }}
+            </div>
+        {% empty %}
+            <li><h3>Looks like something went wrong!</h3></li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
